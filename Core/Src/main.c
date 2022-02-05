@@ -43,6 +43,9 @@ UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
 uint8_t myMSG[100] = {'\0'};
+uint8_t result[10];
+uint8_t passed[6] = {'P','A','S','S','E','D'};
+uint8_t failed[6] = {'F','A','I','L','E','D'};
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -79,7 +82,28 @@ uint8_t * DtoZkette(int32_t number){
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-	int32_t a=-1, b=2, c=-3, d=5;
+	//int32_t a=-1, b=2, c=-3, d=5;
+
+	if (getMax(0, 2) == 2) result[0] = 1;
+	else result[0] = 0;
+	if (getMax(100, 25) == 100) result[1] = 1;
+	else result[1] = 0;
+	if (getMax(12, 32) == 32) result[2] = 1;
+	else result[2] = 0;
+	if (getMax(1, 5) == 5) result[3] = 1;
+	else result[3] = 0;
+	if (getMax(-424, -1201) == -424) result[4] = 1;
+	else result[4] = 0;
+	if (getMax(-124, -54564) == -124) result[5] = 1;
+	else result[5] = 0;
+	if (getMax(-4561, -45) == -45) result[6] = 1;
+	else result[6] = 0;
+	if (getMax(456, -8757) == 456) result[7] = 1;
+	else result[7] = 0;
+	if (getMax(-754, 246345) == 246345) result[8] = 1;
+	else result[8] = 0;
+	if (getMax(456, -245) == 456) result[9] = 1;
+	else result[9] = 0;
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -110,6 +134,20 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
+	  for (int i = 0; i< sizeof(result); i++){
+		  if (result[i]) {
+			  myPrint(huart2, "Test ");
+			  myPrint(huart2, DtoZkette(i));
+			  myPrint(huart2, ": ");
+			  myPrint(huart2, passed);
+			  myPrint(huart2, "\n");
+		  }
+	  }
+	  myPrint(huart2, "\n");
+	  myPrint(huart2, "\n");
+	  HAL_Delay(10000);
+
+	  /*
 	  myPrint(huart2, "Max von a und c:");
 	  myPrint(huart2, DtoZkette(getMax(a, c)));
 	  HAL_Delay(1000);
@@ -125,7 +163,7 @@ int main(void)
 	  HAL_Delay(1000);
 	  myPrint(huart2, "\n");
 	  myPrint(huart2, "\n");
-	  myPrint(huart2, "\n");
+	  myPrint(huart2, "\n");*/
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
