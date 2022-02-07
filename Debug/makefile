@@ -61,8 +61,8 @@ all: main-build
 main-build: Unit\ Tests.elf secondary-outputs
 
 # Tool invocations
-Unit\ Tests.elf: $(OBJS) $(USER_OBJS) D:\STMCubeIDE\workspace\Unit\ Tests\STM32F103RBTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "Unit Tests.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"D:\STMCubeIDE\workspace\Unit Tests\STM32F103RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Unit Tests.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Unit\ Tests.elf: $(OBJS) $(USER_OBJS) C:\Users\tusit\STM32CubeIDE\STM32F103RB-UnitTests\STM32F103RBTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "Unit Tests.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"C:\Users\tusit\STM32CubeIDE\STM32F103RB-UnitTests\STM32F103RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Unit Tests.map" -Wl,--gc-sections -static -L"C:\Users\tusit\STM32CubeIDE\STM32F103RB-UnitTests\Core\Tests" --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

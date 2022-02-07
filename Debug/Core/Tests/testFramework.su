@@ -1,1 +1,2 @@
-testFramework.c:3:6:spec_UnitTests	4	static
+testFramework.c:3:6:UNITTEST_ASSERT_EQUAL_INT32	16	static
+testFramework.c:6:6:UNITTEST_ASSERT_EQUAL_UINT32	16	static

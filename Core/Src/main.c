@@ -21,7 +21,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "testFramework.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -58,15 +58,28 @@ int32_t getMax(int32_t term1, int32_t term2){
 	else return term2;
 }
 
-void myPrint(UART_HandleTypeDef huart, uint8_t * pData){
+void myPrint(uint8_t * pData){
 	uint8_t MSG[255] = {'\0'};
 	sprintf((char *)MSG, (char *)pData);
 	HAL_UART_Transmit(&huart2, MSG, sizeof(MSG), 0xFFFF);
 }
 
-uint8_t * DtoZkette(int32_t number){
-	sprintf((char *)myMSG, "%d", number);
-	return myMSG;
+void uprints(char * pData){
+	HAL_UART_Transmit(&huart2, pData, sizeof(pData), 0xFFFF);
+}
+
+char * i32toStringDec(int32_t number){
+	char *zMSG;
+	zMSG = malloc(sizeof(char)*100);
+	itoa(number, zMSG, 10);
+	return zMSG;
+}
+
+char * i32toStringHex(int32_t number){
+	char *zMSG;
+	zMSG = malloc(sizeof(char)*100);
+	itoa(number, zMSG, 16);
+	return zMSG;
 }
 /* USER CODE END PFP */
 
@@ -84,26 +97,16 @@ int main(void)
   /* USER CODE BEGIN 1 */
 	//int32_t a=-1, b=2, c=-3, d=5;
 
-	if (getMax(0, 2) == 2) result[0] = 1;
-	else result[0] = 0;
-	if (getMax(100, 25) == 100) result[1] = 1;
-	else result[1] = 0;
-	if (getMax(12, 32) == 32) result[2] = 1;
-	else result[2] = 0;
-	if (getMax(1, 5) == 5) result[3] = 1;
-	else result[3] = 0;
-	if (getMax(-424, -1201) == -424) result[4] = 1;
-	else result[4] = 0;
-	if (getMax(-124, -54564) == -124) result[5] = 1;
-	else result[5] = 0;
-	if (getMax(-4561, -45) == -45) result[6] = 1;
-	else result[6] = 0;
-	if (getMax(456, -8757) == 456) result[7] = 1;
-	else result[7] = 0;
-	if (getMax(-754, 246345) == 246345) result[8] = 1;
-	else result[8] = 0;
-	if (getMax(456, -245) == 456) result[9] = 1;
-	else result[9] = 0;
+	result[0] = UNITTEST_ASSERT_EQUAL_UINT32(2, getMax(0, 2));
+	result[1] = UNITTEST_ASSERT_EQUAL_UINT32(100, getMax(100, 25));
+	result[2] = UNITTEST_ASSERT_EQUAL_UINT32(32, getMax(12, 32));
+	result[3] = UNITTEST_ASSERT_EQUAL_UINT32(5, getMax(1, 5));
+	result[4] = UNITTEST_ASSERT_EQUAL_UINT32(-424, getMax(-424, -1201));
+	result[5] = UNITTEST_ASSERT_EQUAL_UINT32(-124, getMax(-124, -54564));
+	result[6] = UNITTEST_ASSERT_EQUAL_UINT32(-45, getMax(-4561, -45));
+	result[7] = UNITTEST_ASSERT_EQUAL_UINT32(456, getMax(456, -8757));
+	result[8] = UNITTEST_ASSERT_EQUAL_UINT32(246345, getMax(-754, 246345));
+	result[9] = UNITTEST_ASSERT_EQUAL_UINT32(456, getMax(456, -245));
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -134,18 +137,21 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-	  for (int i = 0; i< sizeof(result); i++){
+	  for (int32_t i = 0; i< sizeof(result); i++){
+		  uprints("Test ");
+		  uprints(i32toStringHex(i+1));
+		  uprints("\t: ");
 		  if (result[i]) {
-			  myPrint(huart2, "Test ");
-			  myPrint(huart2, DtoZkette(i));
-			  myPrint(huart2, ": ");
-			  myPrint(huart2, passed);
-			  myPrint(huart2, "\n");
+			  uprints(passed);
+		  } else {
+			  uprints(failed);
 		  }
+		  uprints("\n");
 	  }
-	  myPrint(huart2, "\n");
-	  myPrint(huart2, "\n");
-	  HAL_Delay(10000);
+	  uprints("\n");
+	  uprints("\n");
+
+	  HAL_Delay(500);
 
 	  /*
 	  myPrint(huart2, "Max von a und c:");
